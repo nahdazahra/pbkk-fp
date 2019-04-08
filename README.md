@@ -10,7 +10,7 @@
 
 | Nama | NRP |
 | :--- | :---:|
-|Gusti Ngurah Satria Aryawan | 051115 4000 0066 |
+| Gusti Ngurah Satria Aryawan | 051115 4000 0066 |
 | Pius Pambudi | 051115 4000 0069 |
 | Nahda Fauziyah Zahra | 051115 4000 0141 |
 
@@ -19,12 +19,11 @@ Aplikasi yang akan kami buat adalah <i>"Portal Informasi Lomba Informatika"</i>
 
 ## Deskripsi
 - Analisis Aplikasi
-    - Perlunya sebuah website yang menampilkan lomba yang diadakan khususnya untuk mahasiswa Informatika.
-    - Terdapat informasi singkat mengenai lomba tersebut.
-    - Lomba yang ditampilkan memiliki status apakah masih berjalan atau sudah berakhir.
-    - Kebutuhan fitur reminder lomba.
+    - Dibutuhkan portal untuk informasi tentang lomba yang berlangsung, khususmya perlombaan mengenai isu teknologi.
+    - Portal dapat memberikan informasi lomba seperti deskripsi dari lomba tersebut, waktu lomba diadakan, institusi yang mengadakan lomba, serta hadiah dari perlombaan tersebut.
+    - Portal juga dapat menampilkan notifikasi jika ada lomba baru atau lomba yang sedang berlangsung.
 
 - Deskripsi Aplikasi
-    - Terdapat sebuah halaman yang berisi lomba-lomba yang sedang berlangsung atau akan diadakan.
-    - Berisi informasi singkat mengenai lomba tersebut.
+    - Terdapat sebuah halaman yang berisi daftar perlombaan yang sedang berlangsung atau akan berlangsung.
+    - Berisi informasi-informasi terkait lomba tersebut.
 
