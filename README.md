@@ -52,8 +52,8 @@ Aplikasi yang akan kami buat adalah <i>"Portal Informasi Lomba Informatika"</i>
 
 ## Tampilan Web
 - Home Page
-![alt image](src/img/home.png)
+![alt image](src/img/home.PNG)
 - Event Page
-![alt image](src/img/event.png)
+![alt image](src/img/event.PNG)
 - Detail Event Page
-![alt image](src/img/info.png)
+![alt image](src/img/info.PNG)
