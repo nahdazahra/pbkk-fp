@@ -27,3 +27,18 @@ Aplikasi yang akan kami buat adalah <i>"Portal Informasi Lomba Informatika"</i>
     - Terdapat sebuah halaman yang berisi daftar perlombaan yang sedang berlangsung atau akan berlangsung.
     - Berisi informasi-informasi terkait lomba tersebut.
 
+## Use Case
+- Daftar Aktor
+    - Penulis
+    - Admin
+    - User
+- Daftar Fitur
+    - Memuat daftar lomba
+    - Timeline lomba dalam bentuk calender
+    - List lomba beserta keterangannya (Coming Soon/Running/Ended)
+    - Notifikasi lomba kepada 
+    
+## Sitemap Aplikasi
+![alt image](src/img/sitemap.PNG)
+
+## Tampilan Web
