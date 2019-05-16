@@ -20,6 +20,7 @@ public class User implements java.io.Serializable {
 	private boolean isAdmin;
 	
 	public User(String name, String email, String password, boolean isAdmin) {
+		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
