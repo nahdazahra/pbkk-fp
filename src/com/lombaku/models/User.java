@@ -19,12 +19,16 @@ public class User implements java.io.Serializable {
 	private String password;
 	private boolean isAdmin;
 	
-	public User(String name, String email, String password, boolean isAdmin) {
+	public User() {
+		
+	}
+	
+	public User(String name, String email, String password) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.isAdmin = isAdmin;
+		this.isAdmin = false;
 	}
 	
 	@Id

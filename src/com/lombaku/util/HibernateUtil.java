@@ -1,4 +1,4 @@
-package com.lombaku.utils;
+package com.lombaku.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

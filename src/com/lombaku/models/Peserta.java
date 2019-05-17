@@ -21,6 +21,10 @@ public class Peserta implements java.io.Serializable {
     private User user;
     private Lomba lomba;
     private Date tanggalDaftar;
+    
+    public Peserta() {
+    	
+    }
 
     public Peserta(User user, Lomba lomba, Date tanggalDaftar) {
         super();

@@ -25,6 +25,11 @@ public class Lomba implements java.io.Serializable {
     private Date akhirLomba;
     private String deskripsi;
     private User user;
+    private boolean isVerified;
+    
+    public Lomba() {
+    	
+    }
 
     public Lomba(String nama, Date mulaiDaftar, Date akhirDaftar, Date mulaiLomba, Date akhirLomba,
             String deskripsi, User user) {
@@ -112,5 +117,14 @@ public class Lomba implements java.io.Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+    
+	@Column(name = "is_verified", nullable = false)
+	public boolean getIsVerified() {
+		return this.isVerified;
+	}
+	
+	public void setIsVerified(boolean isVerified) {
+		this.isVerified = isVerified;
+	}
     
 }
