@@ -40,15 +40,15 @@ Aplikasi yang akan kami buat adalah <i>"Portal Informasi Lomba Informatika"</i>
         - Menghapus lomba
         - Menghapus account
     - User
-        - Mendafar lomba
+        - Mendaftar lomba
 
 - Daftar Fitur
     - Memuat daftar lomba
-    - Timeline lomba dalam bentuk calender
+    - Detail lomba
     - List lomba beserta keterangannya (Upcoming/Ongoing/Ended)
     
 ## Sitemap Aplikasi
-![alt image](src/img/sitemap-1.PNG)
+![alt image](src/img/sitemap-2.PNG)
 
 ## Tampilan Web
 - Home Page
