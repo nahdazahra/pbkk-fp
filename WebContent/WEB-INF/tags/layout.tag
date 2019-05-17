@@ -24,15 +24,21 @@
 				href="<c:url value="/" />">Lombaku</a>
 
 			<div class="collapse navbar-collapse" id="navbar">
+				<ul class="navbar-nav">
+					<c:if test="${not empty loggedIn}">
+						<li class="nav-item"><a class="nav-link"
+							href="<c:url value="/lomba/new" />">Buat Lomba</a></li>
+					</c:if>
+				</ul>
 				<ul class="navbar-nav ml-auto">
 					<c:choose>
-						<c:when test="${empty logged_in}">
+						<c:when test="${empty loggedIn}">
 							<li class="nav-item"><a class="nav-link"
 								href="<c:url value="/register" />">Daftar</a></li>
 							<li class="nav-item"><a class="nav-link"
 								href="<c:url value="/login" />">Masuk</a>
 						</c:when>
-						<c:when test="${not empty logged_in}">
+						<c:when test="${not empty loggedIn}">
 							<li class="nav-item"><a class="nav-link"
 								href="<c:url value="/logout" />">Keluar</a></li>
 						</c:when>
@@ -41,6 +47,13 @@
 				</ul>
 			</div>
 		</nav>
+
+		<c:if test="${not empty success}">
+			<div class="alert alert-success alert-dismissible fade show mt-3">
+				${success}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		</c:if>
 
 		<div class="p-3">
 			<jsp:doBody />

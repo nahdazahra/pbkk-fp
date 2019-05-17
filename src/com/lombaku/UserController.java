@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.lombaku.models.Lomba;
 import com.lombaku.models.User;
 import com.lombaku.util.HibernateUtil;
 
@@ -29,18 +30,28 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@ModelAttribute("user") User user, BindingResult result, HttpServletRequest request) {
+	public String register(@ModelAttribute("user") User user, BindingResult result,
+			HttpServletRequest request, RedirectAttributes attributes) {
+		
 		if (result.hasErrors()) {
-            return "error";
-        }
+            return "redirect:/register";
+		}
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
-		session.save(user);
-		session.getTransaction().commit();
+		
+		try {
+			session.save(user);
+			session.getTransaction().commit();
+		}
+		catch (JDBCException e) {
+            attributes.addFlashAttribute("error", "Email sudah terpakai.");
+            return "redirect:/register";
+		}
+		
         session.close();
         
-        request.getSession().setAttribute("logged_in", user);
+        request.getSession().setAttribute("loggedIn", user);
 		
 		return "redirect:/";
 	}
@@ -51,7 +62,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request, RedirectAttributes attributes) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
@@ -72,10 +83,11 @@ public class UserController {
         session.close();
         
         if (userList.isEmpty()) {
+            attributes.addFlashAttribute("error", "Email atau sandi salah.");
         	return "redirect:/login";
         }
         
-        request.getSession().setAttribute("logged_in", userList.get(0));
+        request.getSession().setAttribute("loggedIn", userList.get(0));
 		
 		return "redirect:/";
 	}
