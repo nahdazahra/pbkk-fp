@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
@@ -30,11 +31,9 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String register(@ModelAttribute("user") User user, BindingResult result,
-			HttpServletRequest request, RedirectAttributes attributes) {
-		
+	public ModelAndView register(@Valid @ModelAttribute("user") User user, BindingResult result, HttpServletRequest request) {
 		if (result.hasErrors()) {
-            return "redirect:/register";
+            return new ModelAndView("register", "user", user);
 		}
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -42,18 +41,18 @@ public class UserController {
 		
 		try {
 			session.save(user);
-			session.getTransaction().commit();
 		}
 		catch (JDBCException e) {
-            attributes.addFlashAttribute("error", "Email sudah terpakai.");
-            return "redirect:/register";
+			result.rejectValue("email", "error.user", "Email sudah terpakai");
+            return new ModelAndView("register", "user", user);
 		}
-		
+
+		session.getTransaction().commit();
         session.close();
         
         request.getSession().setAttribute("loggedIn", user);
 		
-		return "redirect:/";
+		return new ModelAndView("redirect:/");
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)

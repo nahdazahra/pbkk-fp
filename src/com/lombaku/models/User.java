@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Email;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 
@@ -42,6 +45,7 @@ public class User implements java.io.Serializable {
 		this.id = id;
 	}
 
+    @NotBlank(message = "Tidak boleh kosong")
 	@Column(name = "name", nullable = false, length = 100)
 	public String getName() {
 		return this.name;
@@ -50,7 +54,9 @@ public class User implements java.io.Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+    @NotBlank(message = "Tidak boleh kosong")
+    @Email(message = "Email tidak valid")
 	@Column(name = "email", unique = true, nullable = false, length = 100)
 	public String getEmail() {
 		return this.email;
@@ -60,6 +66,7 @@ public class User implements java.io.Serializable {
 		this.email = email;
 	}
 
+    @NotBlank(message = "Tidak boleh kosong")
 	@Column(name = "password", nullable = false, length = 100)
 	public String getPassword() {
 		return this.password;

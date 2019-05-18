@@ -43,13 +43,21 @@ public class LombaController {
 	}
 
 	@RequestMapping(value = "/lomba/new", method = RequestMethod.GET)
-	public ModelAndView showCreateLombaPage() {
+	public ModelAndView showCreateLombaPage(HttpServletRequest request) {
+		if (request.getSession().getAttribute("loggedIn") == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
 		return new ModelAndView("createLomba", "lomba", new Lomba());
 	}
 
 	@RequestMapping(value = "/lomba/new", method = RequestMethod.POST)
 	public ModelAndView createLomba(@Valid @ModelAttribute("lomba") Lomba lomba, BindingResult result,
 			HttpServletRequest request, RedirectAttributes attributes) {
+		
+		if (request.getSession().getAttribute("loggedIn") == null) {
+			return new ModelAndView("redirect:/login");
+		}
 		
 		if (result.hasErrors()) {
             return new ModelAndView("createLomba", "lomba", lomba);

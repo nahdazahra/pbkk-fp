@@ -12,11 +12,11 @@
 			</c:if>
 			<div class="form-group">
     			<label for="email">Email</label>
-    			<input type="text" name="email" class="form-control" id="email" placeholder="Email" required="required" />
+    			<input type="text" name="email" class="form-control" id="email" placeholder="Email" />
   			</div>
 			<div class="form-group">
     			<label for="password">Sandi</label>
-    			<input type="password" name="password" class="form-control" id="password" placeholder="Sandi" required="required" />
+    			<input type="password" name="password" class="form-control" id="password" placeholder="Sandi" />
   			</div>
   			<button type="submit" class="btn btn-primary">Masuk</button>
   		</form>

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -57,7 +57,7 @@ public class Lomba implements java.io.Serializable {
         this.id = id;
     }
     
-    @NotEmpty
+    @NotBlank(message = "Tidak boleh kosong")
     @Column(name = "nama", nullable = false, length = 300)
     public String getNama() {
         return nama;
@@ -67,7 +67,7 @@ public class Lomba implements java.io.Serializable {
         this.nama = nama;
     }
 
-    @NotNull
+    @NotNull(message = "Tidak boleh kosong")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "mulai_daftar", nullable = false)
     public Date getMulaiDaftar() {
@@ -78,7 +78,7 @@ public class Lomba implements java.io.Serializable {
         this.mulaiDaftar = mulaiDaftar;
     }
 
-    @NotNull
+    @NotNull(message = "Tidak boleh kosong")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "akhir_daftar", nullable = false)
     public Date getAkhirDaftar() {
@@ -89,7 +89,7 @@ public class Lomba implements java.io.Serializable {
         this.akhirDaftar = akhirDaftar;
     }
 
-    @NotNull
+    @NotNull(message = "Tidak boleh kosong")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "mulai_lomba", nullable = false)
     public Date getMulaiLomba() {
@@ -100,7 +100,7 @@ public class Lomba implements java.io.Serializable {
         this.mulaiLomba = mulaiLomba;
     }
 
-    @NotNull
+    @NotNull(message = "Tidak boleh kosong")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "akhir_lomba", nullable = false)
     public Date getAkhirLomba() {
@@ -111,7 +111,7 @@ public class Lomba implements java.io.Serializable {
         this.akhirLomba = akhirLomba;
     }
 
-    @NotEmpty
+    @NotBlank(message = "Tidak boleh kosong")
     @Column(name = "deskripsi", nullable = false, length = 2000)
     public String getDeskripsi() {
         return deskripsi;
