@@ -28,6 +28,11 @@
 					<c:if test="${not empty loggedIn}">
 						<li class="nav-item"><a class="nav-link"
 							href="<c:url value="/lomba/new" />">Buat Lomba</a></li>
+						
+					<c:if test="${loggedIn.isAdmin}">
+						<li class="nav-item"><a class="nav-link"
+							href="<c:url value="/lomba/pending" />">Lomba Pending</a></li>
+					</c:if>
 					</c:if>
 				</ul>
 				<ul class="navbar-nav ml-auto">

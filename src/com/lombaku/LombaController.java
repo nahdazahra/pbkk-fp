@@ -75,6 +75,67 @@ public class LombaController {
 		
 		return new ModelAndView("redirect:/");
 	}
+
+	@RequestMapping(value = "/lomba/pending", method = RequestMethod.GET)
+	public ModelAndView showPendingLomba(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("loggedIn");
+		
+		if (user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
+		if (user.getIsAdmin() == false) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Lomba> criteriaQuery = criteriaBuilder.createQuery(Lomba.class);
+        Root<Lomba> root = criteriaQuery.from(Lomba.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("isVerified"), false));
+        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
+
+        List<Lomba> lombaList = session.createQuery(criteriaQuery).getResultList();
+        session.close();
+		
+		return new ModelAndView("pendingLomba", "lombaList", lombaList);
+	}
+
+	@RequestMapping(value = "/lomba/verify", method = RequestMethod.POST)
+	public ModelAndView verifyLomba(HttpServletRequest request, RedirectAttributes attributes) {
+		User user = (User) request.getSession().getAttribute("loggedIn");
+		int lombaId = Integer.parseInt(request.getParameter("lombaId"));
+		
+		if (user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
+		if (user.getIsAdmin() == false) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Lomba> criteriaQuery = criteriaBuilder.createQuery(Lomba.class);
+        Root<Lomba> root = criteriaQuery.from(Lomba.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), lombaId));
+
+        Lomba lomba = session.createQuery(criteriaQuery).getResultList().get(0);
+        lomba.setIsVerified(true);
+        
+		session.beginTransaction();
+		session.update(lomba);
+		session.getTransaction().commit();
+        session.close();
+        
+        attributes.addFlashAttribute("success", "Lomba berhasil diverifikasi.");
+		
+		return new ModelAndView("redirect:/lomba/pending");
+	}
 	
 	// TODO:
 	// Halaman detail untuk lomba

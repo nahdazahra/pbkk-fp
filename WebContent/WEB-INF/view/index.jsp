@@ -16,7 +16,7 @@
            			<a href="<c:url value="/lomba/${lomba.id}" />" class="font-weight-bold">${lomba.nama}</a>
            		</div>
            		<div class="my-2">
-           			${fn:substring(lomba.deskripsi, 0, 400)}...
+           			${lomba.deskripsi}
            		</div>
            		<div class="my-2">
            			Pendaftaran:
