@@ -30,7 +30,7 @@
       					<c:choose>
       					<c:when test="${peserta.status == 0}">
       						<td>Belum Terverifikasi</td>
-      						<td><a class="nav-link btn btn-info"
+      						<td><a class="nav-link btn btn-success"
 							href="<c:url value="/lomba/manage/verify_peserta/${peserta.id}/1" />">Verifikasi Peserta</a></td>
 							<td><a class="nav-link btn btn-danger"
 							href="<c:url value="/lomba/manage/verify_peserta/${peserta.id}/-1" />">Tolak</a></td>
@@ -41,7 +41,8 @@
       					</c:when>
       					<c:otherwise>
       						<td>Sudah diverifikasi</td>
-      						<td>-</td>
+      						<td><a class="nav-link btn btn-info" target="_blank"
+							href="<c:url value="/lomba/manage/print/${peserta.id}" />">Cetak Kartu Peserta</a></td>
       					</c:otherwise>
       					</c:choose>
     				</tr>

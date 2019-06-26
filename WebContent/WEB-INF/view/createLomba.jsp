@@ -50,6 +50,9 @@
     				<form:errors path="akhirLomba" cssClass="invalid-feedback" />
     			</spring:bind>
   			</div>
+  			<div class="form-group">
+				
+  			</div>
   			<button type="submit" class="btn btn-primary">Ajukan</button>
 		</form:form>
     </jsp:body>

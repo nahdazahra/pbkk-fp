@@ -255,6 +255,27 @@ public class LombaController {
         return new ModelAndView("redirect:/lomba/manage/"+peserta.getLomba().getId()) ;
 	}
 	
+	@RequestMapping(value = "/lomba/manage/print/{id}", method = RequestMethod.GET)
+	public ModelAndView verifyPeserta(HttpServletRequest request, @PathVariable String id, RedirectAttributes attributes) {
+		User user = (User) request.getSession().getAttribute("loggedIn");
+		
+		if (user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Peserta> criteriaQuery = criteriaBuilder.createQuery(Peserta.class);
+        Root<Peserta> root = criteriaQuery.from(Peserta.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+
+        Peserta peserta = session.createQuery(criteriaQuery).getResultList().get(0);
+
+		return new ModelAndView("printKartu", "peserta", peserta);
+	}
+	
 	@RequestMapping(value = "/lomba/daftar", method = RequestMethod.POST)
 	public ModelAndView daftarLomba(@RequestBody String lombaId, HttpServletRequest request, RedirectAttributes attributes) {
 //		System.out.println("++++++++++++++++"+lombaId.split("=")[1]);
