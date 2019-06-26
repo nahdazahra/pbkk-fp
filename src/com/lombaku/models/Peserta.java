@@ -21,16 +21,18 @@ public class Peserta implements java.io.Serializable {
     private User user;
     private Lomba lomba;
     private Date tanggalDaftar;
+    private int status;
     
     public Peserta() {
     	
     }
 
-    public Peserta(User user, Lomba lomba, Date tanggalDaftar) {
+    public Peserta(User user, Lomba lomba, Date tanggalDaftar, int status) {
         super();
         this.user = user;
         this.lomba = lomba;
         this.tanggalDaftar = tanggalDaftar;
+        this.status = status;
     }
     
     @Id
@@ -52,6 +54,15 @@ public class Peserta implements java.io.Serializable {
     public void setTanggalDaftar(Date tanggalDaftar) {
         this.tanggalDaftar = tanggalDaftar;
     }
+    
+    @Column(name = "status", nullable = false)
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     @ManyToOne
     @JoinColumn(name = "user")
@@ -72,5 +83,15 @@ public class Peserta implements java.io.Serializable {
     public void setLomba(Lomba lomba) {
         this.lomba = lomba;
     }
+    
+//    @Column(name = "lomba", insertable = false, updatable = false)
+//    private int lomba;
+//    public int getLombafk() {
+//        return lombafk;
+//    }
+//
+//    public void setLombafk(int id) {
+//        this.lombafk = id;
+//    }
     
 }

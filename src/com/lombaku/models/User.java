@@ -2,14 +2,21 @@ package com.lombaku.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Email;
 
 import static javax.persistence.GenerationType.IDENTITY;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -84,5 +91,14 @@ public class User implements java.io.Serializable {
 	public void setIsAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
+	
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stock")
+//	public Set<Lomba> getStockDailyRecords() {
+//		return this.Lomb;
+//	}
+//
+//	public void setStockDailyRecords(Set<StockDailyRecord> stockDailyRecords) {
+//		this.stockDailyRecords = stockDailyRecords;
+//	}
 	
 }

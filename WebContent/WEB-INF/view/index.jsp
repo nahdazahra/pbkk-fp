@@ -28,6 +28,14 @@
            			<fmt:formatDate value="${lomba.mulaiLomba}" pattern="d MMMM yyyy" /> -
            			<fmt:formatDate value="${lomba.akhirLomba}" pattern="d MMMM yyyy" />
            		</div>
+           		
+           		<c:if test="${not empty loggedIn}">
+           		
+						<form method="POST" action="<c:url value="/lomba/daftar" />">
+    						<input type="hidden" name="lombaId" value="${lomba.id}">
+    						<button class="btn btn-success" type="submit">Daftar</button>
+    					</form>
+           		</c:if>
            	</div>
     	</c:forEach>
     </jsp:body>
