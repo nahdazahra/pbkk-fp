@@ -27,13 +27,26 @@
       					<td>${peserta.getUser().name}</td>
       					<td>${peserta.getUser().email}</td>
       					<td><fmt:formatDate value="${peserta.tanggalDaftar}" pattern="d MMMM yyyy" /></td>
-      					<td>${peserta.status}</td>
-      					<td><a class="nav-link btn btn-info"
-							href="<c:url value="/lomba/manage/verify_peserta" />">Verifikasi Peserta</a></td>
+      					<c:choose>
+      					<c:when test="${peserta.status == 0}">
+      						<td>Belum Terverifikasi</td>
+      						<td><a class="nav-link btn btn-info"
+							href="<c:url value="/lomba/manage/verify_peserta/${peserta.id}/1" />">Verifikasi Peserta</a></td>
+							<td><a class="nav-link btn btn-danger"
+							href="<c:url value="/lomba/manage/verify_peserta/${peserta.id}/-1" />">Tolak</a></td>
+      					</c:when>
+      					<c:when test="${peserta.status == -1}">
+      						<td>Verifikasi Ditolak</td>
+      						<td>-</td>
+      					</c:when>
+      					<c:otherwise>
+      						<td>Sudah diverifikasi</td>
+      						<td>-</td>
+      					</c:otherwise>
+      					</c:choose>
     				</tr>
     			</c:forEach>
   				</tbody>
 			</table>
-			
     </jsp:body>
 </t:layout>

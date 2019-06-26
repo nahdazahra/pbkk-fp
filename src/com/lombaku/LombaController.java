@@ -196,7 +196,6 @@ public class LombaController {
 	
 	@RequestMapping(value = "/lomba/manage/{id}", method = RequestMethod.GET)
 	public ModelAndView lihatPeserta(HttpServletRequest request, @PathVariable String id) {
-		
 		User user = (User) request.getSession().getAttribute("loggedIn");
 		
 		if (user == null) {
@@ -212,7 +211,7 @@ public class LombaController {
         criteriaQueryLomba.where(criteriaBuilderLomba.equal(rootLomba.get("id"), id));
 
         List<Lomba> lomba = session.createQuery(criteriaQueryLomba).getResultList();
-        System.out.println(lomba);
+//        System.out.println(lomba);
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Peserta> criteriaQuery = criteriaBuilder.createQuery(Peserta.class);
         Root<Peserta> root = criteriaQuery.from(Peserta.class);
@@ -221,10 +220,39 @@ public class LombaController {
         criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
 
         List<Peserta> pesertaList = session.createQuery(criteriaQuery).getResultList();
-        System.out.println(pesertaList);
+//        System.out.println(pesertaList);
         session.close();
 		
 		return new ModelAndView("showPeserta", "pesertaList", pesertaList);
+	}
+	
+	@RequestMapping(value = "/lomba/manage/verify_peserta/{id}/{action}", method = RequestMethod.GET)
+	public ModelAndView verifyPeserta(HttpServletRequest request, @PathVariable String id, @PathVariable String action, RedirectAttributes attributes) {
+		User user = (User) request.getSession().getAttribute("loggedIn");
+		
+		if (user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Peserta> criteriaQuery = criteriaBuilder.createQuery(Peserta.class);
+        Root<Peserta> root = criteriaQuery.from(Peserta.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+
+        Peserta peserta = session.createQuery(criteriaQuery).getResultList().get(0);
+        peserta.setStatus(Integer.parseInt(action));
+        
+		session.beginTransaction();
+		session.update(peserta);
+		session.getTransaction().commit();
+        session.close();
+        
+        attributes.addFlashAttribute("success", "Peserta berhasil diverifikasi.");
+		
+        return new ModelAndView("redirect:/lomba/manage/"+peserta.getLomba().getId()) ;
 	}
 	
 	@RequestMapping(value = "/lomba/daftar", method = RequestMethod.POST)
