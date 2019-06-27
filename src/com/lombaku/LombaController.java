@@ -49,9 +49,25 @@ public class LombaController {
         criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
 
         List<Lomba> lombaList = session.createQuery(criteriaQuery).getResultList();
+        
+
+        CriteriaBuilder criteriaBuilderKat = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQueryKat = criteriaBuilderKat.createQuery(Kategori.class);
+        Root<Kategori> rootKat = criteriaQueryKat.from(Kategori.class);
+        
+        criteriaQueryKat.orderBy(criteriaBuilderKat.desc(rootKat.get("id")));
+
+        List<Kategori> kategoriList = session.createQuery(criteriaQueryKat).getResultList();
+        
         session.close();
         
-        return new ModelAndView("index", "lombaList", lombaList);
+        List<Object> list = new ArrayList<Object>();
+        list.add(lombaList);
+        list.add(kategoriList);
+        
+//        System.out.println(list.get(0));
+        
+        return new ModelAndView("index", "lists", list);
 	}
 
 	@RequestMapping(value = "/lomba/new", method = RequestMethod.GET)

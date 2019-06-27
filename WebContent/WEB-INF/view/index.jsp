@@ -9,8 +9,15 @@
 	<jsp:attribute name="title">Beranda</jsp:attribute>
 	<jsp:body>
 		<div class="mb-4 font-weight-bold">Lomba Terbaru</div>
-		
-        <c:forEach items="${lombaList}" var="lomba">
+		<form method="get">
+			<select name="kat" class="form-control">
+				<option value="" selected disabled>-- PILIH KATEGORI --</option>
+				<c:forEach items="${lists.get(1)}" var="kategori">
+				<option value="${kategori.id}">${kategori.kategori}</option>
+				</c:forEach>
+			</select>
+		</form>
+        <c:forEach items="${lists.get(0)}" var="lomba">
 			<div class="my-4">
            		<div class="my-2">
            			<a href="<c:url value="/lomba/${lomba.id}" />" class="font-weight-bold">${lomba.nama}</a>
