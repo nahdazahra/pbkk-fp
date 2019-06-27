@@ -11,11 +11,13 @@
 		<div class="mb-4 font-weight-bold">Lomba Terbaru</div>
 		<form method="get">
 			<select name="kat" class="form-control">
-				<option value="" selected disabled>-- PILIH KATEGORI --</option>
+				<option value="">-- SEMUA KATEGORI --</option>
 				<c:forEach items="${lists.get(1)}" var="kategori">
-				<option value="${kategori.id}">${kategori.kategori}</option>
+				<option value="${kategori.id}" ${kategori.id == param.kat ? 'selected' : ''}>${kategori.kategori}</option>
 				</c:forEach>
 			</select>
+			
+			<button type="submit" class="btn btn-primary">Filter</button>
 		</form>
         <c:forEach items="${lists.get(0)}" var="lomba">
 			<div class="my-4">

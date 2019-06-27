@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.lombaku.models.Kategori;
 import com.lombaku.models.Lomba;
@@ -38,14 +40,28 @@ import com.lombaku.util.HibernateUtil;
 public class LombaController {
 
 	@RequestMapping("/")
-	public ModelAndView index() {
+	public ModelAndView index(@RequestParam Optional<String> kat) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Lomba> criteriaQuery = criteriaBuilder.createQuery(Lomba.class);
         Root<Lomba> root = criteriaQuery.from(Lomba.class);
+
+        String katFilter = kat.orElse(null);
+        System.out.println(katFilter);
         
         criteriaQuery.where(criteriaBuilder.equal(root.get("isVerified"), true));
+        if(katFilter != null && katFilter != "") {
+        	CriteriaBuilder criteriaBuilderKat2 = session.getCriteriaBuilder();
+            CriteriaQuery<Kategori> criteriaQueryKat2 = criteriaBuilderKat2.createQuery(Kategori.class);
+            Root<Kategori> rootKat2 = criteriaQueryKat2.from(Kategori.class);
+            
+            criteriaQueryKat2.orderBy(criteriaBuilderKat2.desc(rootKat2.get("id")));
+        	
+            Kategori myKategori = session.createQuery(criteriaQueryKat2).getResultList().get(0);
+            
+        	criteriaQuery.where(criteriaBuilder.equal(root.get("kategori"), myKategori));
+        }
         criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
 
         List<Lomba> lombaList = session.createQuery(criteriaQuery).getResultList();
