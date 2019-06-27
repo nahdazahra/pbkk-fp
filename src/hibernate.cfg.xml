@@ -13,5 +13,6 @@
 		<mapping class="com.lombaku.models.User" />
 		<mapping class="com.lombaku.models.Lomba" />
 		<mapping class="com.lombaku.models.Peserta" />
+		<mapping class="com.lombaku.models.Kategori" />
 	</session-factory>
 </hibernate-configuration>

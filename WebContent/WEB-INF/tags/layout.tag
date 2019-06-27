@@ -36,6 +36,8 @@
 							href="<c:url value="/lomba/pending" />">Lomba Pending</a></li>
 						<li class="nav-item"><a class="nav-link"
 							href="<c:url value="/lomba/lomba_show" />">Show All Lomba</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="<c:url value="/kategori" />">Manajemen Kategori</a></li>
 					</c:if>
 					</c:if>
 				</ul>

@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
+import com.lombaku.models.Kategori;
 import com.lombaku.models.Lomba;
 import com.lombaku.models.Peserta;
 import com.lombaku.models.User;
@@ -52,6 +53,17 @@ public class LombaController {
 		if (request.getSession().getAttribute("loggedIn") == null) {
 			return new ModelAndView("redirect:/login");
 		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQuery = criteriaBuilder.createQuery(Kategori.class);
+        Root<Kategori> root = criteriaQuery.from(Kategori.class);
+        
+        criteriaQuery.orderBy(criteriaBuilder.desc(root.get("id")));
+
+        List<Kategori> kategoriList = session.createQuery(criteriaQuery).getResultList();
+        session.close();
 		
 		return new ModelAndView("createLomba", "lomba", new Lomba());
 	}
