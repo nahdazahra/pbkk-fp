@@ -1,6 +1,7 @@
 package com.lombaku;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,8 +20,12 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.lombaku.models.Kategori;
 import com.lombaku.models.Lomba;
@@ -65,24 +71,55 @@ public class LombaController {
         List<Kategori> kategoriList = session.createQuery(criteriaQuery).getResultList();
         session.close();
 		
-		return new ModelAndView("createLomba", "lomba", new Lomba());
+		return new ModelAndView("createLomba", "kategoriList", kategoriList);
 	}
 
 	@RequestMapping(value = "/lomba/new", method = RequestMethod.POST)
-	public ModelAndView createLomba(@Valid @ModelAttribute("lomba") Lomba lomba, BindingResult result,
+	public ModelAndView createLomba(@RequestBody String reqBody, BindingResult result,
 			HttpServletRequest request, RedirectAttributes attributes) {
 		
 		if (request.getSession().getAttribute("loggedIn") == null) {
 			return new ModelAndView("redirect:/login");
 		}
 		
-		if (result.hasErrors()) {
-            return new ModelAndView("createLomba", "lomba", lomba);
-        }
+		System.out.println(reqBody);
+	    MultiValueMap<String, String> parameters =
+	            UriComponentsBuilder.fromUriString("?"+reqBody).build().getQueryParams();
+	    
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQuery = criteriaBuilder.createQuery(Kategori.class);
+        Root<Kategori> root = criteriaQuery.from(Kategori.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), parameters.get("kategori").get(0)));
+
+        Kategori kategori = session.createQuery(criteriaQuery).getResultList().get(0);
+		
+//	    List<String> param1 = parameters.get("param1");
+//	    List<String> param2 = parameters.get("param2");
+		
+		Lomba lomba = new Lomba();
 		
 		lomba.setUser((User) request.getSession().getAttribute("loggedIn"));
+		lomba.setKategori(kategori);
+		lomba.setDeskripsi(parameters.get("deskripsi").get(0));
+		lomba.setNama(parameters.get("nama").get(0));
+		Date mulaiDaftar;
+		try {
+			mulaiDaftar = new SimpleDateFormat("yyyy-mm-dd").parse(parameters.get("mulaiDaftar").get(0));
+			lomba.setMulaiDaftar(mulaiDaftar);
+			Date akhirDaftar = new SimpleDateFormat("yyyy-mm-dd").parse(parameters.get("akhirDaftar").get(0));  
+			lomba.setAkhirDaftar(akhirDaftar);
+			Date mulaiLomba = new SimpleDateFormat("yyyy-mm-dd").parse(parameters.get("mulaiLomba").get(0));  
+			lomba.setMulaiLomba(mulaiLomba);
+			Date akhirLomba = new SimpleDateFormat("yyyy-mm-dd").parse(parameters.get("akhirLomba").get(0));  
+			lomba.setAkhirLomba(akhirLomba);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
 		
-		Session session = HibernateUtil.getSessionFactory().openSession();
 		session.beginTransaction();
 		session.save(lomba);
 		session.getTransaction().commit();

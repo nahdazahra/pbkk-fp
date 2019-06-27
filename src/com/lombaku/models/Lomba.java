@@ -28,6 +28,7 @@ public class Lomba implements java.io.Serializable {
     private Date akhirLomba;
     private String deskripsi;    
     private User user;
+    private Kategori kategori;
     private boolean isVerified;
     
     public Lomba() {
@@ -35,7 +36,7 @@ public class Lomba implements java.io.Serializable {
     }
     
     public Lomba(String nama, Date mulaiDaftar, Date akhirDaftar, Date mulaiLomba, Date akhirLomba,
-            String deskripsi, User user) {
+            String deskripsi, User user, Kategori kategori) {
         super();
         this.nama = nama;
         this.mulaiDaftar = mulaiDaftar;
@@ -44,6 +45,7 @@ public class Lomba implements java.io.Serializable {
         this.akhirLomba = akhirLomba;
         this.deskripsi = deskripsi;
         this.user = user;
+        this.kategori = kategori;
     }
     
     @Id
@@ -139,5 +141,15 @@ public class Lomba implements java.io.Serializable {
 	public void setIsVerified(boolean isVerified) {
 		this.isVerified = isVerified;
 	}
+	
+	@ManyToOne
+    @JoinColumn(name = "kategori")
+    public Kategori getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(Kategori kategori) {
+        this.kategori = kategori;
+    }
     
 }
