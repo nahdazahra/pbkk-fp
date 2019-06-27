@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -69,6 +70,75 @@ public class KategoriController {
         attributes.addFlashAttribute("success", "Berhasil menambah kategori.");
 		
 		return new ModelAndView("redirect:/kategori");
+	}
+	
+	@RequestMapping(value = "/kategori/edit/{id}", method = RequestMethod.GET)
+	public ModelAndView edit(HttpServletRequest request, @PathVariable String id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQuery = criteriaBuilder.createQuery(Kategori.class);
+        Root<Kategori> root = criteriaQuery.from(Kategori.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+
+        Kategori kategori = session.createQuery(criteriaQuery).getResultList().get(0);
+        session.close();
+        
+        return new ModelAndView("kategoriEdit", "kategori", kategori);
+	}
+	
+	@RequestMapping(value = "/kategori/edit/{id}", method = RequestMethod.POST)
+	public ModelAndView verifyPeserta(@RequestBody String inputKategori, HttpServletRequest request, @PathVariable String id, RedirectAttributes attributes) {
+		User user = (User) request.getSession().getAttribute("loggedIn");
+		
+		if (user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQuery = criteriaBuilder.createQuery(Kategori.class);
+        Root<Kategori> root = criteriaQuery.from(Kategori.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+        
+        String inpKategori = inputKategori.split("=")[1];
+		System.out.println("++++++++++++++++"+inpKategori);
+		
+        Kategori kategori = session.createQuery(criteriaQuery).getResultList().get(0);
+        kategori.setKategori(inpKategori);
+        
+		session.beginTransaction();
+		session.update(kategori);
+		session.getTransaction().commit();
+        session.close();
+        
+        attributes.addFlashAttribute("success", "Edit berhasil.");
+		
+        return new ModelAndView("redirect:/kategori") ;
+	}
+	
+	@RequestMapping(value = "/kategori/delete/{id}", method = RequestMethod.GET)
+	public ModelAndView delete(HttpServletRequest request, @PathVariable String id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<Kategori> criteriaQuery = criteriaBuilder.createQuery(Kategori.class);
+        Root<Kategori> root = criteriaQuery.from(Kategori.class);
+        
+        criteriaQuery.where(criteriaBuilder.equal(root.get("id"), id));
+
+        Kategori kategori = session.createQuery(criteriaQuery).getResultList().get(0);
+        
+        session.beginTransaction();
+        session.delete(kategori);
+//		session.getTransaction().commit();
+        session.flush();
+        session.close();
+        
+        return new ModelAndView("redirect:/kategori") ;
 	}
 
 //	@RequestMapping(value = "/register", method = RequestMethod.GET)
